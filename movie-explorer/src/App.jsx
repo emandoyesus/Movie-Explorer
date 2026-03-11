@@ -9,10 +9,12 @@ function App() {
 
       <Navbar />
 
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/movie/:id" element={<MovieDetails />} />
-      </Routes>
+      <main className="pt-20">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/movie/:id" element={<MovieDetails />} />
+        </Routes>
+      </main>
 
     </BrowserRouter>
   );
