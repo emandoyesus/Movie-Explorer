@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import MovieCard from "../components/MovieCard";
 import SearchBar from "../components/SearchBar";
 import { getPopularMovies, searchMovies } from "../services/movieApi";
+import Hero from "../components/Hero";
 
 export default function Home() {
 
     const [movies, setMovies] = useState([]);
+    const [featured, setFeatured] = useState(null);
 
     useEffect(() => {
         loadPopular();
@@ -14,6 +16,9 @@ export default function Home() {
     async function loadPopular() {
         const data = await getPopularMovies();
         setMovies(data);
+
+        const randomMovie = data[Math.floor(Math.random() * data.length)];
+        setFeatured(randomMovie);
     }
 
     async function handleSearch(query) {
