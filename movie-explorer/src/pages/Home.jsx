@@ -1,34 +1,37 @@
 import { useEffect, useState } from "react";
-import { getPopularMovies, searchMovies } from "../services/movieApi";
 import MovieCard from "../components/MovieCard";
-import SearchBar from "../components/SearchBar";
+import { getPopularMovies } from "../services/movieApi";
 
-function Home() {
+export default function Home() {
+
     const [movies, setMovies] = useState([]);
 
     useEffect(() => {
-        getPopularMovies().then((res) => {
-            setMovies(res.data.results);
-        });
+        async function loadMovies() {
+            const data = await getPopularMovies();
+            setMovies(data);
+        }
+
+        loadMovies();
     }, []);
 
-    const handleSearch = (query) => {
-        searchMovies(query).then((res) => {
-            setMovies(res.data.results);
-        });
-    };
-
     return (
-        <div>
-            <SearchBar onSearch={handleSearch} />
+        <div className="p-6">
 
-            <div className="movie-grid">
+            <h1 className="text-3xl font-bold mb-6">
+                Popular Movies
+            </h1>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+
                 {movies.map((movie) => (
                     <MovieCard key={movie.id} movie={movie} />
                 ))}
+
             </div>
+
         </div>
     );
 }
 
-export default Home;
+console.log(import.meta.env.VITE_TMDB_API_KEY);

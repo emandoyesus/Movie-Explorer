@@ -1,18 +1,29 @@
 import { Link } from "react-router-dom";
 
-function MovieCard({ movie }) {
+export default function MovieCard({ movie }) {
+
+    const imageUrl =
+        "https://image.tmdb.org/t/p/w500" + movie.poster_path;
+
     return (
+
         <Link to={`/movie/${movie.id}`}>
-            <div className="movie-card">
+
+            <div className="bg-gray-800 p-4 rounded-lg hover:scale-105 transition">
+
                 <img
-                    src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                    src={imageUrl}
                     alt={movie.title}
+                    className="rounded"
                 />
-                <h3>{movie.title}</h3>
-                <p>⭐ {movie.vote_average}</p>
+
+                <h2 className="mt-2 text-lg font-semibold">
+                    {movie.title}
+                </h2>
+
             </div>
+
         </Link>
+
     );
 }
-
-export default MovieCard;
