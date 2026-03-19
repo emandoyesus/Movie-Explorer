@@ -1,15 +1,32 @@
 import { Link } from "react-router-dom";
+import { useRef } from "react";
 
-export default function MovieRow({ title, movies, watchlistHandlers }) {
+export default function MovieRow({ title, movies, watchlistHandlers, loadMore }) {
     const { addToWatchlist, removeFromWatchlist, isInWatchlist } = watchlistHandlers;
+    const rowRef = useRef();
+
+    // Detect scroll near the end
+    const handleScroll = () => {
+        const row = rowRef.current;
+        if (!row) return;
+
+        if (row.scrollLeft + row.clientWidth >= row.scrollWidth - 200) {
+            // Call loadMore when near end
+            if (loadMore) loadMore();
+        }
+    };
 
     const safeMovies = Array.isArray(movies) ? movies : [];
 
     return (
         <div className="mb-12">
-            <h2 className="text-2xl font-bold mb-6">{title}</h2>
+            {title && <h2 className="text-2xl font-bold mb-6">{title}</h2>}
 
-            <div className="flex space-x-6 overflow-x-auto scrollbar-hide py-2">
+            <div
+                ref={rowRef}
+                className="flex space-x-6 overflow-x-auto scrollbar-hide py-2"
+                onScroll={handleScroll}
+            >
                 {safeMovies.length === 0 ? (
                     <p className="text-gray-500">No movies available.</p>
                 ) : (
