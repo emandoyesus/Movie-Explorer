@@ -1,25 +1,27 @@
 export default function Hero({ movie }) {
 
-    const backdrop =
-        "https://image.tmdb.org/t/p/original" + movie.backdrop_path;
+    if (!movie) return null;
+
+    const backdrop = movie.backdrop_path
+        ? "https://image.tmdb.org/t/p/original" + movie.backdrop_path
+        : "";
 
     return (
-        <div className="pt-20">
+        <div
+            className="h-[70vh] bg-cover bg-center flex items-end"
+            style={{ backgroundImage: `url(${backdrop})` }}
+        >
+            <div className="bg-gradient-to-t from-black p-8 w-full">
 
-            {featured && <Hero movie={featured} />}
+                <h1 className="text-4xl font-bold mb-4">
+                    {movie.title}
+                </h1>
 
-            <div className="p-6">
-
-                <SearchBar onSearch={handleSearch} />
-
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                    {movies.map(movie => (
-                        <MovieCard key={movie.id} movie={movie} />
-                    ))}
-                </div>
+                <p className="max-w-xl text-gray-300">
+                    {movie.overview}
+                </p>
 
             </div>
-
         </div>
     );
 }

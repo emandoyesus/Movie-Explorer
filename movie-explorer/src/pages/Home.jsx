@@ -1,48 +1,73 @@
 import { useEffect, useState } from "react";
-import MovieCard from "../components/MovieCard";
-import SearchBar from "../components/SearchBar";
-import { getPopularMovies, searchMovies } from "../services/movieApi";
 import Hero from "../components/Hero";
+import SearchBar from "../components/SearchBar";
+import MovieRow from "../components/MovieRow";
+
+import {
+    getPopularMovies,
+    getTopRatedMovies,
+    getUpcomingMovies,
+    searchMovies
+} from "../services/movieApi";
 
 export default function Home() {
 
-    const [movies, setMovies] = useState([]);
+    const [popular, setPopular] = useState([]);
+    const [topRated, setTopRated] = useState([]);
+    const [upcoming, setUpcoming] = useState([]);
     const [featured, setFeatured] = useState(null);
+    const [searchResults, setSearchResults] = useState([]);
 
     useEffect(() => {
-        loadPopular();
+        loadAllMovies();
     }, []);
 
-    async function loadPopular() {
-        const data = await getPopularMovies();
-        setMovies(data);
+    async function loadAllMovies() {
+        const pop = await getPopularMovies();
+        const top = await getTopRatedMovies();
+        const up = await getUpcomingMovies();
 
-        const randomMovie = data[Math.floor(Math.random() * data.length)];
-        setFeatured(randomMovie);
+        setPopular(pop);
+        setTopRated(top);
+        setUpcoming(up);
+
+        setFeatured(pop[Math.floor(Math.random() * pop.length)]);
     }
 
     async function handleSearch(query) {
 
         if (!query) {
-            loadPopular();
+            setSearchResults([]);
             return;
         }
 
         const results = await searchMovies(query);
-        setMovies(results);
+        setSearchResults(results);
     }
 
     return (
 
-        <div className="p-6">
+        <div className="pt-20">
 
-            <SearchBar onSearch={handleSearch} />
+            {featured && <Hero movie={featured} />}
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="p-6">
 
-                {movies.map(movie => (
-                    <MovieCard key={movie.id} movie={movie} />
-                ))}
+                <SearchBar onSearch={handleSearch} />
+
+                {searchResults.length > 0 ? (
+
+                    <MovieRow title="Search Results" movies={searchResults} />
+
+                ) : (
+
+                    <>
+                        <MovieRow title="Popular" movies={popular} />
+                        <MovieRow title="Top Rated" movies={topRated} />
+                        <MovieRow title="Upcoming" movies={upcoming} />
+                    </>
+
+                )}
 
             </div>
 

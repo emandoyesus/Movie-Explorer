@@ -32,3 +32,19 @@ export async function searchMovies(query) {
 
   return data.results;
 }
+
+export async function getTopRatedMovies() {
+  const res = await fetch(
+    `${BASE_URL}/movie/top_rated?api_key=${API_KEY}`
+  );
+  const data = await res.json();
+  return data.results;
+}
+
+export async function getUpcomingMovies() {
+  const res = await fetch(
+    `${BASE_URL}/movie/upcoming?api_key=${API_KEY}`
+  );
+  const data = await res.json();
+  return data.results;
+}
