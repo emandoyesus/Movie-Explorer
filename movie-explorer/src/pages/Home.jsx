@@ -1,76 +1,80 @@
 import { useEffect, useState } from "react";
-import Hero from "../components/Hero";
-import SearchBar from "../components/SearchBar";
 import MovieRow from "../components/MovieRow";
-
-import {
-    getPopularMovies,
-    getTopRatedMovies,
-    getUpcomingMovies,
-    searchMovies
-} from "../services/movieApi";
+import GenreFilter from "../components/GenreFilter";
+import useWatchlist from "../hooks/useWatchlist";
 
 export default function Home() {
-
     const [popular, setPopular] = useState([]);
     const [topRated, setTopRated] = useState([]);
     const [upcoming, setUpcoming] = useState([]);
-    const [featured, setFeatured] = useState(null);
-    const [searchResults, setSearchResults] = useState([]);
+    const [genres, setGenres] = useState([]);
+    const [selectedGenre, setSelectedGenre] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    const watchlistHandlers = useWatchlist();
+
+    const apiKey = import.meta.env.VITE_TMDB_API_KEY;
 
     useEffect(() => {
-        loadAllMovies();
-    }, []);
+        const fetchMovies = async () => {
+            try {
+                setLoading(true);
 
-    async function loadAllMovies() {
-        const pop = await getPopularMovies();
-        const top = await getTopRatedMovies();
-        const up = await getUpcomingMovies();
+                const [popularRes, topRes, upcomingRes, genresRes] = await Promise.all([
+                    fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}`),
+                    fetch(`https://api.themoviedb.org/3/movie/top_rated?api_key=${apiKey}`),
+                    fetch(`https://api.themoviedb.org/3/movie/upcoming?api_key=${apiKey}`),
+                    fetch(`https://api.themoviedb.org/3/genre/movie/list?api_key=${apiKey}`)
+                ]);
 
-        setPopular(pop);
-        setTopRated(top);
-        setUpcoming(up);
+                if (!popularRes.ok || !topRes.ok || !upcomingRes.ok || !genresRes.ok) {
+                    throw new Error("Failed to fetch data");
+                }
 
-        setFeatured(pop[Math.floor(Math.random() * pop.length)]);
-    }
+                const [popularData, topData, upcomingData, genresData] = await Promise.all([
+                    popularRes.json(),
+                    topRes.json(),
+                    upcomingRes.json(),
+                    genresRes.json()
+                ]);
 
-    async function handleSearch(query) {
+                setGenres(genresData.genres || []);
 
-        if (!query) {
-            setSearchResults([]);
-            return;
-        }
+                // Filter movies by selected genre
+                const filterByGenre = (movies) =>
+                    selectedGenre
+                        ? (movies.results || []).filter((m) => m.genre_ids.includes(selectedGenre))
+                        : movies.results || [];
 
-        const results = await searchMovies(query);
-        setSearchResults(results);
-    }
+                setPopular(filterByGenre(popularData));
+                setTopRated(filterByGenre(topData));
+                setUpcoming(filterByGenre(upcomingData));
+            } catch (err) {
+                console.error(err);
+                setError(err.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchMovies();
+    }, [selectedGenre]);
+
+    if (loading) return <p className="text-center mt-20">Loading movies...</p>;
+    if (error) return <p className="text-center mt-20 text-red-500">{error}</p>;
 
     return (
+        <div className="pt-20 px-6">
+            <GenreFilter
+                genres={genres}
+                selectedGenre={selectedGenre}
+                onSelectGenre={setSelectedGenre}
+            />
 
-        <div className="pt-20">
-
-            {featured && <Hero movie={featured} />}
-
-            <div className="p-6">
-
-                <SearchBar onSearch={handleSearch} />
-
-                {searchResults.length > 0 ? (
-
-                    <MovieRow title="Search Results" movies={searchResults} />
-
-                ) : (
-
-                    <>
-                        <MovieRow title="Popular" movies={popular} />
-                        <MovieRow title="Top Rated" movies={topRated} />
-                        <MovieRow title="Upcoming" movies={upcoming} />
-                    </>
-
-                )}
-
-            </div>
-
+            <MovieRow title="Popular" movies={popular} watchlistHandlers={watchlistHandlers} />
+            <MovieRow title="Top Rated" movies={topRated} watchlistHandlers={watchlistHandlers} />
+            <MovieRow title="Upcoming" movies={upcoming} watchlistHandlers={watchlistHandlers} />
         </div>
     );
 }
