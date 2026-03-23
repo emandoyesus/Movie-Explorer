@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import useWatchlist from "../hooks/useWatchlist";
 import TrailerModal from "../components/TrailerModal";
+import SimilarMovies from "../components/SimilarMovies";
 
 const apiKey = import.meta.env.VITE_TMDB_API_KEY;
 
@@ -149,6 +150,9 @@ export default function MovieDetails() {
                                 <p className="text-gray-400">No trailer available.</p>
                             )}
                         </div>
+
+                        {/* 🎬 Similar Movies Section */}
+                        <SimilarMovies movieId={movie.id} />
                     </div>
                 </div>
             </div>
