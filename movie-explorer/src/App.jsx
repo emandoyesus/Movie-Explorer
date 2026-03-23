@@ -8,18 +8,18 @@ import Search from "./pages/Search";
 function App() {
   return (
     <BrowserRouter>
+      <div className="min-h-screen bg-gray-900 text-white">
+        <Navbar />
 
-      <Navbar />
-
-      <main className="pt-20">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/movie/:id" element={<MovieDetails />} />
-          <Route path="/watchlist" element={<Watchlist />} />
-          <Route path="/search" element={<Search />} />
-        </Routes>
-      </main>
-
+        <main className="pt-20 pb-12">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/movie/:id" element={<MovieDetails />} />
+            <Route path="/watchlist" element={<Watchlist />} />
+            <Route path="/search" element={<Search />} />
+          </Routes>
+        </main>
+      </div>
     </BrowserRouter>
   );
 }

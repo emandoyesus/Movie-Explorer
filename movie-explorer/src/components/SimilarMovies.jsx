@@ -29,7 +29,7 @@ export default function SimilarMovies({ movieId }) {
             <h2 className="text-2xl font-bold mb-4">You May Also Like</h2>
             <div className="flex space-x-4 overflow-x-auto scrollbar-hide">
                 {similar.map((movie) => (
-                    <Link key={movie.id} to={`/movie/${movie.id}`}>
+                    <Link key={movie.id} to={`/movie/${movie.id}`} className="flex-shrink-0 w-32 sm:w-40">
                         <img
                             src={
                                 movie.poster_path
@@ -37,7 +37,7 @@ export default function SimilarMovies({ movieId }) {
                                     : "https://via.placeholder.com/200x300?text=No+Image"
                             }
                             alt={movie.title}
-                            className="h-48 rounded-lg hover:scale-105 transition cursor-pointer"
+                            className="w-full h-48 sm:h-60 rounded-lg object-cover hover:scale-105 transition shadow-lg cursor-pointer"
                         />
                     </Link>
                 ))}

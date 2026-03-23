@@ -79,9 +79,8 @@ export default function MovieDetails() {
     const inWatchlist = watchlistHandlers.isInWatchlist(movie.id);
 
     return (
-        <>
-            <div className="pt-20 px-6 text-white">
-                {/* Backdrop */}
+        <div className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+            {/* Backdrop */}
                 <div
                     className="w-full h-96 bg-cover bg-center rounded-lg mb-6"
                     style={{ backgroundImage: `url(${backdrop})` }}
@@ -155,7 +154,6 @@ export default function MovieDetails() {
                         <SimilarMovies movieId={movie.id} />
                     </div>
                 </div>
-            </div>
 
             {/* 🎥 Modal */}
             {showModal && (
@@ -164,6 +162,6 @@ export default function MovieDetails() {
                     onClose={() => setShowModal(false)}
                 />
             )}
-        </>
+        </div>
     );
 }
