@@ -1,29 +1,56 @@
 import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import useWatchlist from "../hooks/useWatchlist";
 
 export default function Navbar() {
   const location = useLocation();
+  const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
-  const { watchlist } = useWatchlist(); // for badge counter
+  const [query, setQuery] = useState("");
+  const { watchlist } = useWatchlist();
 
   const links = [
     { name: "Home", path: "/" },
     { name: "Watchlist", path: "/watchlist" },
   ];
 
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (!query.trim()) return;
+
+    navigate(`/search?q=${encodeURIComponent(query)}`);
+    setQuery("");
+    setMenuOpen(false);
+  };
+
   return (
     <nav className="bg-gray-900 fixed w-full z-50 shadow-lg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
 
-          {/* Logo / Title */}
-          <Link to="/" className="text-2xl font-bold text-red-500 hover:text-red-400 transition">
+          {/* Logo */}
+          <Link
+            to="/"
+            className="text-2xl font-bold text-red-500 hover:text-red-400 transition"
+          >
             Movie Explorer
           </Link>
 
-          {/* Desktop Links */}
+          {/* Desktop Section */}
           <div className="hidden md:flex items-center space-x-6">
+
+            {/* 🔍 Search */}
+            <form onSubmit={handleSearch}>
+              <input
+                type="text"
+                placeholder="Search movies..."
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                className="px-3 py-1 rounded bg-gray-800 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-red-500 transition"
+              />
+            </form>
+
+            {/* Links */}
             {links.map((link) => (
               <div key={link.path} className="relative">
                 <Link
@@ -34,7 +61,7 @@ export default function Navbar() {
                   {link.name}
                 </Link>
 
-                {/* Show badge on Watchlist */}
+                {/* Watchlist Badge */}
                 {link.name === "Watchlist" && watchlist.length > 0 && (
                   <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">
                     {watchlist.length}
@@ -43,13 +70,13 @@ export default function Navbar() {
               </div>
             ))}
 
-            {/* Login/Profile button */}
+            {/* Login Button */}
             <button className="px-4 py-2 bg-red-600 rounded hover:bg-red-500 transition text-white">
               Login
             </button>
           </div>
 
-          {/* Mobile menu button */}
+          {/* Mobile Hamburger */}
           <div className="md:hidden flex items-center">
             <button
               onClick={() => setMenuOpen(!menuOpen)}
@@ -60,7 +87,6 @@ export default function Navbar() {
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
               >
                 {menuOpen ? (
                   <path
@@ -85,7 +111,20 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       {menuOpen && (
-        <div className="md:hidden bg-gray-900 px-2 pt-2 pb-3 space-y-1">
+        <div className="md:hidden bg-gray-900 px-2 pt-2 pb-3 space-y-3">
+
+          {/* 🔍 Mobile Search */}
+          <form onSubmit={handleSearch} className="px-3">
+            <input
+              type="text"
+              placeholder="Search movies..."
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              className="w-full px-3 py-2 rounded bg-gray-800 text-white border border-gray-600 focus:outline-none"
+            />
+          </form>
+
+          {/* Links */}
           {links.map((link) => (
             <div key={link.path} className="relative">
               <Link
@@ -97,16 +136,16 @@ export default function Navbar() {
                 {link.name}
               </Link>
 
-              {/* Watchlist badge in mobile */}
+              {/* Watchlist Badge */}
               {link.name === "Watchlist" && watchlist.length > 0 && (
-                <span className="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">
+                <span className="absolute top-1 right-3 bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">
                   {watchlist.length}
                 </span>
               )}
             </div>
           ))}
 
-          {/* Login button */}
+          {/* Login */}
           <button className="w-full px-3 py-2 bg-red-600 rounded hover:bg-red-500 text-white">
             Login
           </button>
