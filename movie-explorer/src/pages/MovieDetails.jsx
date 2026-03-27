@@ -151,9 +151,12 @@ export default function MovieDetails() {
                         )}
                     </div>
 
-                    {/* 🎬 Similar Movies Section */}
-                    <SimilarMovies movieId={movie.id} />
                 </div>
+            </div>
+
+            {/* 🎬 Similar Movies Section */}
+            <div className="mt-8 mb-8">
+                <SimilarMovies movieId={movie.id} />
             </div>
 
             {/* 🎥 Modal */}
