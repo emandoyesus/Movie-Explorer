@@ -81,79 +81,80 @@ export default function MovieDetails() {
     return (
         <div className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
             {/* Backdrop */}
-                <div
-                    className="w-full h-96 bg-cover bg-center rounded-lg mb-6"
-                    style={{ backgroundImage: `url(${backdrop})` }}
+            <div
+                className="w-full h-96 bg-cover bg-center rounded-lg mb-6"
+                style={{ backgroundImage: `url(${backdrop})` }}
+            />
+
+            <div className="flex flex-col md:flex-row gap-6">
+                {/* Poster */}
+                <img
+                    loading="lazy"
+                    src={poster}
+                    alt={movie.title}
+                    className="w-64 rounded-lg shadow-lg"
                 />
 
-                <div className="flex flex-col md:flex-row gap-6">
-                    {/* Poster */}
-                    <img
-                        src={poster}
-                        alt={movie.title}
-                        className="w-64 rounded-lg shadow-lg"
-                    />
+                {/* Info */}
+                <div className="flex-1">
+                    <h1 className="text-3xl font-bold mb-2">{movie.title}</h1>
+                    <p className="text-gray-400 mb-2">
+                        ⭐ {movie.vote_average} | {movie.release_date}
+                    </p>
 
-                    {/* Info */}
-                    <div className="flex-1">
-                        <h1 className="text-3xl font-bold mb-2">{movie.title}</h1>
-                        <p className="text-gray-400 mb-2">
-                            ⭐ {movie.vote_average} | {movie.release_date}
-                        </p>
-
-                        {/* Genres */}
-                        <div className="flex flex-wrap gap-2 mb-4">
-                            {movie.genres?.map((g) => (
-                                <span
-                                    key={g.id}
-                                    className="bg-gray-700 px-2 py-1 rounded text-sm"
-                                >
-                                    {g.name}
-                                </span>
-                            ))}
-                        </div>
-
-                        {/* Overview */}
-                        <p className="mb-4 leading-relaxed">
-                            {movie.overview || "No description available."}
-                        </p>
-
-                        {/* Watchlist Button */}
-                        <button
-                            onClick={() =>
-                                inWatchlist
-                                    ? watchlistHandlers.removeFromWatchlist(movie.id)
-                                    : watchlistHandlers.addToWatchlist(movie)
-                            }
-                            className={`px-4 py-2 rounded transition ${inWatchlist
-                                ? "bg-red-500 hover:bg-red-400"
-                                : "bg-blue-500 hover:bg-blue-400"
-                                }`}
-                        >
-                            {inWatchlist
-                                ? "Remove from Watchlist"
-                                : "Add to Watchlist"}
-                        </button>
-
-                        {/* 🎬 Trailer Section */}
-                        <div className="mt-8">
-                            <h2 className="text-2xl font-bold mb-4">Trailer</h2>
-                            {trailerKey ? (
-                                <button
-                                    onClick={() => setShowModal(true)}
-                                    className="px-6 py-3 bg-red-600 rounded hover:bg-red-500 transition"
-                                >
-                                    ▶ Watch Trailer
-                                </button>
-                            ) : (
-                                <p className="text-gray-400">No trailer available.</p>
-                            )}
-                        </div>
-
-                        {/* 🎬 Similar Movies Section */}
-                        <SimilarMovies movieId={movie.id} />
+                    {/* Genres */}
+                    <div className="flex flex-wrap gap-2 mb-4">
+                        {movie.genres?.map((g) => (
+                            <span
+                                key={g.id}
+                                className="bg-gray-700 px-2 py-1 rounded text-sm"
+                            >
+                                {g.name}
+                            </span>
+                        ))}
                     </div>
+
+                    {/* Overview */}
+                    <p className="mb-4 leading-relaxed">
+                        {movie.overview || "No description available."}
+                    </p>
+
+                    {/* Watchlist Button */}
+                    <button
+                        onClick={() =>
+                            inWatchlist
+                                ? watchlistHandlers.removeFromWatchlist(movie.id)
+                                : watchlistHandlers.addToWatchlist(movie)
+                        }
+                        className={`px-4 py-2 rounded transition ${inWatchlist
+                            ? "bg-red-500 hover:bg-red-400"
+                            : "bg-blue-500 hover:bg-blue-400"
+                            }`}
+                    >
+                        {inWatchlist
+                            ? "Remove from Watchlist"
+                            : "Add to Watchlist"}
+                    </button>
+
+                    {/* 🎬 Trailer Section */}
+                    <div className="mt-8">
+                        <h2 className="text-2xl font-bold mb-4">Trailer</h2>
+                        {trailerKey ? (
+                            <button
+                                onClick={() => setShowModal(true)}
+                                className="px-6 py-3 bg-red-600 rounded hover:bg-red-500 transition"
+                            >
+                                ▶ Watch Trailer
+                            </button>
+                        ) : (
+                            <p className="text-gray-400">No trailer available.</p>
+                        )}
+                    </div>
+
+                    {/* 🎬 Similar Movies Section */}
+                    <SimilarMovies movieId={movie.id} />
                 </div>
+            </div>
 
             {/* 🎥 Modal */}
             {showModal && (

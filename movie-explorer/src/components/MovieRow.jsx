@@ -41,6 +41,7 @@ export default function MovieRow({ title, movies, watchlistHandlers, loadMore })
                             <div key={movie.id} className="relative flex-shrink-0">
                                 <Link to={`/movie/${movie.id}`}>
                                     <img
+                                        loading="lazy"
                                         src={image}
                                         alt={movie.title || "Untitled"}
                                         className="h-60 md:h-72 lg:h-80 rounded-lg hover:scale-105 transition-transform duration-300 cursor-pointer"

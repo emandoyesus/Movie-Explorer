@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import SkeletonCard from "./SkeletonCard";
 
 const apiKey = import.meta.env.VITE_TMDB_API_KEY;
 
@@ -22,7 +23,15 @@ export default function SimilarMovies({ movieId }) {
         fetchSimilar();
     }, [movieId]);
 
-    if (!similar.length) return null;
+    if (!similar.length) {
+        return (
+            <div className="flex space-x-4 mt-12">
+                {[...Array(6)].map((_, i) => (
+                    <SkeletonCard key={i} />
+                ))}
+            </div>
+        );
+    }
 
     return (
         <div className="mt-12">
@@ -31,6 +40,7 @@ export default function SimilarMovies({ movieId }) {
                 {similar.map((movie) => (
                     <Link key={movie.id} to={`/movie/${movie.id}`} className="flex-shrink-0 w-32 sm:w-40">
                         <img
+                            loading="lazy"
                             src={
                                 movie.poster_path
                                     ? `https://image.tmdb.org/t/p/w200${movie.poster_path}`
