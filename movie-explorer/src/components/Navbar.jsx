@@ -11,6 +11,7 @@ export default function Navbar() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   const searchRef = useRef();
 
@@ -18,6 +19,15 @@ export default function Navbar() {
     { name: "Home", path: "/" },
     { name: "Watchlist", path: "/watchlist" },
   ];
+
+  // 🖱️ Handle scroll fade effect for premium transparent navbar
+  useEffect(() => {
+    const handleScroll = () => {
+        setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   // 🔍 Handle Enter Search
   const handleSearch = (e) => {
@@ -40,8 +50,7 @@ export default function Navbar() {
     const timeout = setTimeout(async () => {
       try {
         const res = await fetch(
-          `https://api.themoviedb.org/3/search/movie?api_key=${import.meta.env.VITE_TMDB_API_KEY
-          }&query=${query}`
+          `https://api.themoviedb.org/3/search/movie?api_key=${import.meta.env.VITE_TMDB_API_KEY}&query=${query}`
         );
         const data = await res.json();
         setResults(data.results?.slice(0, 5) || []);
@@ -61,100 +70,76 @@ export default function Navbar() {
         setShowDropdown(false);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   return (
-    <nav className="bg-gray-900 fixed w-full z-50 shadow-lg">
+    <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? "bg-[#141414]/90 backdrop-blur-lg shadow-lg border-b border-white/5" : "bg-gradient-to-b from-black/80 to-transparent pt-2"}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16 items-center">
-
+        <div className="flex justify-between h-16 sm:h-20 items-center">
+          
           {/* Logo */}
-          <Link
-            to="/"
-            className="text-2xl font-bold text-red-500 hover:text-red-400 transition"
-          >
-            Movie Explorer
+          <Link to="/" className="text-3xl font-extrabold text-red-600 tracking-tighter hover:scale-105 transition-transform drop-shadow-md">
+            MOVIEX
           </Link>
 
-          {/* Desktop */}
-          <div className="hidden md:flex items-center space-x-6">
-
+          {/* Desktop Nav */}
+          <div className="hidden md:flex items-center space-x-8 text-sm font-medium">
+            
             {/* 🔍 Search */}
-            <div ref={searchRef} className="relative">
-              <form onSubmit={handleSearch}>
-                <input
-                  type="text"
-                  placeholder="Search movies..."
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                  onFocus={() => setShowDropdown(true)}
-                  className="px-3 py-1 rounded bg-gray-800 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-red-500 transition"
+            <div ref={searchRef} className="relative group">
+              <form onSubmit={handleSearch} className="relative flex items-center">
+                <svg className="w-5 h-5 absolute left-3 text-white/50 group-focus-within:text-white transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                <input 
+                  type="text" 
+                  placeholder="Movies, shows and more" 
+                  value={query} 
+                  onChange={(e) => setQuery(e.target.value)} 
+                  onFocus={() => setShowDropdown(true)} 
+                  className="pl-10 pr-4 py-2 w-64 rounded-full bg-white/10 text-white placeholder-white/50 border border-transparent focus:outline-none focus:border-white/30 focus:bg-white/20 transition-all shadow-inner" 
                 />
               </form>
 
               {/* Dropdown */}
               {showDropdown && results.length > 0 && (
-                <div className="absolute top-10 left-0 w-72 bg-gray-800 rounded shadow-lg z-50 max-h-96 overflow-y-auto">
-
+                <div className="absolute top-12 left-0 w-full bg-[#181818] rounded-xl shadow-2xl border border-white/10 overflow-hidden z-50">
                   {results.map((movie) => {
-                    const image = movie.poster_path
-                      ? "https://image.tmdb.org/t/p/w92" + movie.poster_path
-                      : "https://via.placeholder.com/92x138";
-
+                    const image = movie.poster_path ? "https://image.tmdb.org/t/p/w92" + movie.poster_path : "https://via.placeholder.com/92x138";
                     return (
-                      <div
-                        key={movie.id}
-                        onClick={() => {
-                          navigate(`/movie/${movie.id}`);
-                          setShowDropdown(false);
-                          setQuery("");
-                        }}
-                        className="flex items-center gap-3 p-2 hover:bg-gray-700 cursor-pointer transition"
-                      >
-                        <img src={image} alt={movie.title} className="w-10 rounded" />
-                        <span className="text-sm">{movie.title}</span>
+                      <div key={movie.id} onClick={() => { navigate(`/movie/${movie.id}`); setShowDropdown(false); setQuery(""); }} className="flex items-center gap-4 p-3 hover:bg-white/10 cursor-pointer transition border-b border-white/5 last:border-0">
+                        <img src={image} alt={movie.title} className="w-10 h-14 object-cover rounded shadow-sm" />
+                        <span className="text-white text-sm font-medium line-clamp-2">{movie.title}</span>
                       </div>
                     );
                   })}
-
                 </div>
               )}
             </div>
 
             {/* Links */}
-            {links.map((link) => (
-              <div key={link.path} className="relative">
-                <Link
-                  to={link.path}
-                  className={`text-white hover:text-red-400 transition px-2 py-1 ${location.pathname === link.path ? "underline" : ""
-                    }`}
-                >
-                  {link.name}
-                </Link>
+            <div className="flex space-x-6 items-center">
+              {links.map((link) => (
+                <div key={link.path} className="relative">
+                  <Link to={link.path} className={`text-gray-300 hover:text-white transition-colors pb-1 ${location.pathname === link.path ? "text-white font-bold" : ""}`}>
+                    {link.name}
+                  </Link>
+                  {link.name === "Watchlist" && watchlist.length > 0 && (
+                     <span className="absolute -top-3 -right-4 bg-red-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full shadow-lg">{watchlist.length}</span>
+                  )}
+                </div>
+              ))}
+            </div>
 
-                {link.name === "Watchlist" && watchlist.length > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">
-                    {watchlist.length}
-                  </span>
-                )}
-              </div>
-            ))}
-
-            <button className="px-4 py-2 bg-red-600 rounded hover:bg-red-500 transition text-white">
-              Login
+            <button className="px-5 py-2 bg-white text-black font-semibold rounded-full hover:bg-gray-200 transition shadow-lg hover:scale-105">
+              Sign In
             </button>
           </div>
 
           {/* Mobile Toggle */}
           <div className="md:hidden flex items-center">
-            <button
-              onClick={() => setMenuOpen(!menuOpen)}
-              className="text-white"
-            >
-              ☰
+            <button onClick={() => setMenuOpen(!menuOpen)} className="text-white">
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" /></svg>
             </button>
           </div>
         </div>
@@ -162,41 +147,17 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       {menuOpen && (
-        <div className="md:hidden bg-gray-900 px-2 pt-2 pb-3 space-y-3">
-
-          {/* Mobile Search */}
-          <form onSubmit={handleSearch} className="px-3">
-            <input
-              type="text"
-              placeholder="Search movies..."
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              className="w-full px-3 py-2 rounded bg-gray-800 text-white border border-gray-600"
-            />
+        <div className="md:hidden bg-[#141414]/95 backdrop-blur-3xl px-4 py-4 space-y-4 border-b border-white/10 absolute w-full">
+          <form onSubmit={handleSearch} className="relative flex items-center">
+             <input type="text" placeholder="Search..." value={query} onChange={(e) => setQuery(e.target.value)} className="w-full px-4 py-2 rounded-full bg-white/10 text-white placeholder-white/50 border border-white/20 focus:outline-none" />
           </form>
-
-          {/* Links */}
           {links.map((link) => (
-            <div key={link.path} className="relative">
-              <Link
-                to={link.path}
-                onClick={() => setMenuOpen(false)}
-                className="block text-white px-3 py-2 hover:bg-gray-800"
-              >
+            <div key={link.path} className="relative w-fit">
+              <Link to={link.path} onClick={() => setMenuOpen(false)} className="block text-white text-lg font-medium hover:text-red-500">
                 {link.name}
               </Link>
-
-              {link.name === "Watchlist" && watchlist.length > 0 && (
-                <span className="absolute top-1 right-3 bg-red-500 text-white text-xs px-1.5 py-0.5 rounded-full">
-                  {watchlist.length}
-                </span>
-              )}
             </div>
           ))}
-
-          <button className="w-full px-3 py-2 bg-red-600 rounded text-white">
-            Login
-          </button>
         </div>
       )}
     </nav>

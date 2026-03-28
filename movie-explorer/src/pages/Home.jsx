@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import MovieRow from "../components/MovieRow";
+import Hero from "../components/Hero";
 import useWatchlist from "../hooks/useWatchlist";
 
 const apiKey = import.meta.env.VITE_TMDB_API_KEY;
@@ -13,7 +14,6 @@ export default function Home() {
     const [genres, setGenres] = useState([]);
     const watchlistHandlers = useWatchlist();
 
-    // --- Move fetchCategory OUTSIDE of useEffect ---
     const fetchCategory = async (category, page, genreId = null) => {
         let url = `https://api.themoviedb.org/3/movie/${category}?api_key=${apiKey}&page=${page}`;
         if (genreId) {
@@ -24,7 +24,6 @@ export default function Home() {
         return data.results || [];
     };
 
-    // --- Fetch genres once ---
     useEffect(() => {
         const fetchGenres = async () => {
             const res = await fetch(
@@ -36,7 +35,6 @@ export default function Home() {
         fetchGenres();
     }, []);
 
-    // --- Load initial movies or when genre changes ---
     useEffect(() => {
         const loadMovies = async () => {
             const [pop, top, up] = await Promise.all([
@@ -52,7 +50,6 @@ export default function Home() {
         loadMovies();
     }, [selectedGenre]);
 
-    // --- Load more functions for infinite scroll ---
     const loadMorePopular = async () => {
         const nextPage = pages.popular + 1;
         const newMovies = await fetchCategory("popular", nextPage, selectedGenre);
@@ -74,49 +71,65 @@ export default function Home() {
         setPages((prev) => ({ ...prev, upcoming: nextPage }));
     };
 
-    return (
-        <div className="pt-20 px-6">
-            {/* --- GENRE FILTER --- */}
-            <div className="flex flex-wrap gap-3 mb-6">
-                {genres.map((g) => (
-                    <button
-                        key={g.id}
-                        className={`px-3 py-1 rounded ${selectedGenre === g.id
-                                ? "bg-red-500 text-white"
-                                : "bg-gray-700 text-white hover:bg-gray-600"
-                            } transition`}
-                        onClick={() => setSelectedGenre(g.id)}
-                    >
-                        {g.name}
-                    </button>
-                ))}
-                <button
-                    className="px-3 py-1 rounded bg-gray-500 text-white hover:bg-gray-400 transition"
-                    onClick={() => setSelectedGenre(null)}
-                >
-                    All
-                </button>
-            </div>
+    const heroMovie = selectedGenre ? null : popular[0];
 
-            {/* --- MOVIE ROWS --- */}
-            <MovieRow
-                title="Popular"
-                movies={popular}
-                watchlistHandlers={watchlistHandlers}
-                loadMore={loadMorePopular}
-            />
-            <MovieRow
-                title="Top Rated"
-                movies={topRated}
-                watchlistHandlers={watchlistHandlers}
-                loadMore={loadMoreTopRated}
-            />
-            <MovieRow
-                title="Upcoming"
-                movies={upcoming}
-                watchlistHandlers={watchlistHandlers}
-                loadMore={loadMoreUpcoming}
-            />
+    return (
+        <div className="bg-[#0f1014] min-h-screen text-white pb-12 w-full">
+            {/* --- HERO --- */}
+            {heroMovie ? <Hero movie={heroMovie} /> : <div className="pt-24" />}
+
+            {/* --- MAIN CONTENT OVERLAPPING HERO --- */}
+            <div className={`relative z-20 ${heroMovie ? '-mt-24 sm:-mt-32' : ''}`}>
+                
+                {/* --- GENRE FILTER --- */}
+                <div className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto mb-10 overflow-x-auto scrollbar-hide mask-edges">
+                    <div className="flex flex-nowrap gap-3 pb-4 w-max">
+                        <button
+                            className={`px-5 py-2 rounded-full font-medium tracking-wide transition-all border ${!selectedGenre
+                                ? "bg-white text-black border-white shadow-[0_0_15px_rgba(255,255,255,0.3)]"
+                                : "bg-white/5 text-gray-300 border-white/10 hover:bg-white/10 hover:text-white"
+                             }`}
+                            onClick={() => setSelectedGenre(null)}
+                        >
+                            All
+                        </button>
+                        {genres.map((g) => (
+                            <button
+                                key={g.id}
+                                className={`px-5 py-2 rounded-full font-medium tracking-wide transition-all border whitespace-nowrap ${selectedGenre === g.id
+                                    ? "bg-red-600 text-white border-red-500 shadow-[0_0_15px_rgba(220,38,38,0.5)]"
+                                    : "bg-white/10 backdrop-blur-md text-gray-200 border-white/10 hover:bg-white/20 hover:text-white shadow-sm"
+                                 }`}
+                                onClick={() => setSelectedGenre(g.id)}
+                            >
+                                {g.name}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+
+                {/* --- MOVIE ROWS --- */}
+                <MovieRow 
+                    title={selectedGenre ? "Movies" : "Trending Now"} 
+                    movies={selectedGenre ? popular : popular.slice(1)} 
+                    watchlistHandlers={watchlistHandlers} 
+                    loadMore={loadMorePopular} 
+                />
+                <MovieRow 
+                    title="Top Rated" 
+                    movies={topRated} 
+                    watchlistHandlers={watchlistHandlers} 
+                    loadMore={loadMoreTopRated} 
+                />
+                {!selectedGenre && (
+                    <MovieRow 
+                        title="Coming Soon" 
+                        movies={upcoming} 
+                        watchlistHandlers={watchlistHandlers} 
+                        loadMore={loadMoreUpcoming} 
+                    />
+                )}
+            </div>
         </div>
     );
 }
