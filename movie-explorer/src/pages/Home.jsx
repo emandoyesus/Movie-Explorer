@@ -74,7 +74,7 @@ export default function Home() {
     const heroMovie = selectedGenre ? null : popular[0];
 
     return (
-        <div className="bg-[#0f1014] min-h-screen text-white pb-12 w-full">
+        <div className="bg-[#050505] min-h-screen text-white pb-12 w-full">
             {/* --- HERO --- */}
             {heroMovie ? <Hero movie={heroMovie} /> : <div className="pt-24" />}
 
@@ -97,7 +97,7 @@ export default function Home() {
                             <button
                                 key={g.id}
                                 className={`px-5 py-2 rounded-full font-medium tracking-wide transition-all border whitespace-nowrap ${selectedGenre === g.id
-                                    ? "bg-red-600 text-white border-red-500 shadow-[0_0_15px_rgba(220,38,38,0.5)]"
+                                    ? "bg-red-600 text-white border-red-500 shadow-[0_0_15px_rgba(212,175,55,0.5)]"
                                     : "bg-white/10 backdrop-blur-md text-gray-200 border-white/10 hover:bg-white/20 hover:text-white shadow-sm"
                                     }`}
                                 onClick={() => setSelectedGenre(g.id)}

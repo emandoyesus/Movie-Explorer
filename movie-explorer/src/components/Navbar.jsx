@@ -75,7 +75,7 @@ export default function Navbar() {
   }, []);
 
   return (
-    <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? "bg-[#141414]/90 backdrop-blur-lg shadow-lg border-b border-white/5" : "bg-gradient-to-b from-black/80 to-transparent pt-2"}`}>
+    <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? "bg-[#050505]/90 backdrop-blur-lg shadow-lg border-b border-white/5" : "bg-gradient-to-b from-black/80 to-transparent pt-2"}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 sm:h-20 items-center">
 
@@ -147,7 +147,7 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       {menuOpen && (
-        <div className="md:hidden bg-[#141414]/95 backdrop-blur-3xl px-4 py-4 space-y-4 border-b border-white/10 absolute w-full">
+        <div className="md:hidden bg-[#050505]/95 backdrop-blur-3xl px-4 py-4 space-y-4 border-b border-white/10 absolute w-full">
           <form onSubmit={handleSearch} className="relative flex items-center">
             <input type="text" placeholder="Search..." value={query} onChange={(e) => setQuery(e.target.value)} className="w-full px-4 py-2 rounded-full bg-white/10 text-white placeholder-white/50 border border-white/20 focus:outline-none" />
           </form>

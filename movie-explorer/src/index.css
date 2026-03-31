@@ -1,6 +1,38 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
 
 @theme {
-  --color-primary: #10b981;
-  --color-background: #000000;
+  /* ULTRA-PREMIUM LUXURY VIP CINEMA THEME */
+  
+  /* Soft, elegant off-white for text to look expensive */
+  --color-white: #FCFAF5; 
+  --color-black: #000000;
+
+  /* Replace typical branding (Netflix Red/Hacker Green) with rich, metallic VIP Gold */
+  --color-red-500: #E6C27A; /* Lighter shimmering gold for hovers */
+  --color-red-600: #D4AF37; /* Deep luxury gold for logos and badges */
+  
+  /* Deep, sophisticated obsidian backgrounds (perfect for cinematic content) */
+  --color-gray-200: #1a1a1a;
+  --color-gray-700: #1C1C1C;
+  --color-gray-800: #121212;
+  --color-gray-900: #050505;
+
+  /* Global variables */
+  --color-primary: #D4AF37;
+  --color-background: #050505;
+
+  /* Elegant mixed typography: Outfit for modern UI readability */
+  --font-sans: 'Outfit', system-ui, -apple-system, sans-serif;
+  --font-serif: 'Playfair Display', Georgia, serif;
+}
+
+/* Add custom animations and premium glass classes */
+@layer utilities {
+  .glass-premium {
+    @apply bg-[#121212]/80 backdrop-blur-2xl border border-white/10 shadow-[0_10px_40px_rgba(0,0,0,0.8)];
+  }
+  .gold-glow {
+    @apply shadow-[0_0_20px_rgba(212,175,55,0.4)];
+  }
 }
