@@ -38,7 +38,7 @@ export default function Navbar() {
           `https://api.themoviedb.org/3/search/movie?api_key=${import.meta.env.VITE_TMDB_API_KEY}&query=${query}`
         );
         const data = await res.json();
-        setResults(data.results?.slice(0, 5) || []);
+        setResults(data.results?.slice(0, 10) || []);
         setShowDropdown(true);
       } catch (err) {
         console.error(err);
@@ -111,7 +111,7 @@ export default function Navbar() {
                     />
                 </form>
                 {showDropdown && results.length > 0 && (
-                    <div className="absolute top-12 right-0 w-80 bg-[#121822] rounded-[1.5rem] shadow-[0_40px_100px_rgba(0,0,0,0.9)] border border-white/5 overflow-hidden z-[1001] p-1">
+              <div className="absolute top-12 right-0 w-80 bg-[#121822] rounded-[1.5rem] shadow-[0_40px_100px_rgba(0,0,0,0.9)] border border-white/5 overflow-y-auto max-h-[450px] z-[1001] p-1 scrollbar-thin">
                     {results.map((movie) => {
                         const image = movie.poster_path ? "https://image.tmdb.org/t/p/w92" + movie.poster_path : "https://via.placeholder.com/92x138";
                         return (
