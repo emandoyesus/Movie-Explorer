@@ -80,7 +80,7 @@ export default function Home() {
 
             {/* --- MAIN CONTENT OVERLAPPING HERO --- */}
             <div className={`relative z-20 ${heroMovie ? '-mt-24 sm:-mt-32' : ''}`}>
-                
+
                 {/* --- GENRE FILTER --- */}
                 <div className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto mb-10 overflow-x-auto scrollbar-hide mask-edges">
                     <div className="flex flex-nowrap gap-3 pb-4 w-max">
@@ -88,7 +88,7 @@ export default function Home() {
                             className={`px-5 py-2 rounded-full font-medium tracking-wide transition-all border ${!selectedGenre
                                 ? "bg-white text-black border-white shadow-[0_0_15px_rgba(255,255,255,0.3)]"
                                 : "bg-white/5 text-gray-300 border-white/10 hover:bg-white/10 hover:text-white"
-                             }`}
+                                }`}
                             onClick={() => setSelectedGenre(null)}
                         >
                             All
@@ -99,7 +99,7 @@ export default function Home() {
                                 className={`px-5 py-2 rounded-full font-medium tracking-wide transition-all border whitespace-nowrap ${selectedGenre === g.id
                                     ? "bg-red-600 text-white border-red-500 shadow-[0_0_15px_rgba(220,38,38,0.5)]"
                                     : "bg-white/10 backdrop-blur-md text-gray-200 border-white/10 hover:bg-white/20 hover:text-white shadow-sm"
-                                 }`}
+                                    }`}
                                 onClick={() => setSelectedGenre(g.id)}
                             >
                                 {g.name}
@@ -109,24 +109,24 @@ export default function Home() {
                 </div>
 
                 {/* --- MOVIE ROWS --- */}
-                <MovieRow 
-                    title={selectedGenre ? "Movies" : "Trending Now"} 
-                    movies={selectedGenre ? popular : popular.slice(1)} 
-                    watchlistHandlers={watchlistHandlers} 
-                    loadMore={loadMorePopular} 
+                <MovieRow
+                    title={selectedGenre ? "Movies" : "Trending Now"}
+                    movies={selectedGenre ? popular : popular.slice(1)}
+                    watchlistHandlers={watchlistHandlers}
+                    loadMore={loadMorePopular}
                 />
-                <MovieRow 
-                    title="Top Rated" 
-                    movies={topRated} 
-                    watchlistHandlers={watchlistHandlers} 
-                    loadMore={loadMoreTopRated} 
+                <MovieRow
+                    title="Top Rated"
+                    movies={topRated}
+                    watchlistHandlers={watchlistHandlers}
+                    loadMore={loadMoreTopRated}
                 />
                 {!selectedGenre && (
-                    <MovieRow 
-                        title="Coming Soon" 
-                        movies={upcoming} 
-                        watchlistHandlers={watchlistHandlers} 
-                        loadMore={loadMoreUpcoming} 
+                    <MovieRow
+                        title="Coming Soon"
+                        movies={upcoming}
+                        watchlistHandlers={watchlistHandlers}
+                        loadMore={loadMoreUpcoming}
                     />
                 )}
             </div>

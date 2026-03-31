@@ -30,7 +30,7 @@ export default function MovieRow({ title, movies, watchlistHandlers, loadMore })
                     <div className="flex space-x-4 overflow-hidden w-full">
                         {/* Shimmer placeholders */}
                         {[...Array(6)].map((_, i) => (
-                           <div key={i} className="flex-shrink-0 w-36 sm:w-44 md:w-52 h-56 sm:h-64 md:h-80 bg-white/5 animate-pulse rounded-xl" />
+                            <div key={i} className="flex-shrink-0 w-36 sm:w-44 md:w-52 h-56 sm:h-64 md:h-80 bg-white/5 animate-pulse rounded-xl" />
                         ))}
                     </div>
                 ) : (

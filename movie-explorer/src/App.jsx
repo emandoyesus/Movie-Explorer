@@ -8,7 +8,7 @@ import Search from "./pages/Search";
 function App() {
   return (
     <BrowserRouter>
-      <div className="min-h-screen bg-gray-900 text-white">
+      <div className="min-h-screen bg-background text-primary">
         <Navbar />
 
         <main className="pt-20 pb-12">

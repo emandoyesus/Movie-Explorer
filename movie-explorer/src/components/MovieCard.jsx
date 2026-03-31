@@ -20,7 +20,7 @@ export default function MovieCard({ movie, watchlistHandlers }) {
                     />
                 </div>
             </Link>
-            
+
             {watchlistHandlers && (
                 <button
                     onClick={(e) => {

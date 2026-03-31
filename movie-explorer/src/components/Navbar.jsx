@@ -23,7 +23,7 @@ export default function Navbar() {
   // 🖱️ Handle scroll fade effect for premium transparent navbar
   useEffect(() => {
     const handleScroll = () => {
-        setScrolled(window.scrollY > 20);
+      setScrolled(window.scrollY > 20);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -78,7 +78,7 @@ export default function Navbar() {
     <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? "bg-[#141414]/90 backdrop-blur-lg shadow-lg border-b border-white/5" : "bg-gradient-to-b from-black/80 to-transparent pt-2"}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 sm:h-20 items-center">
-          
+
           {/* Logo */}
           <Link to="/" className="text-3xl font-extrabold text-red-600 tracking-tighter hover:scale-105 transition-transform drop-shadow-md">
             MOVIEX
@@ -86,18 +86,18 @@ export default function Navbar() {
 
           {/* Desktop Nav */}
           <div className="hidden md:flex items-center space-x-8 text-sm font-medium">
-            
+
             {/* 🔍 Search */}
             <div ref={searchRef} className="relative group">
               <form onSubmit={handleSearch} className="relative flex items-center">
                 <svg className="w-5 h-5 absolute left-3 text-white/50 group-focus-within:text-white transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-                <input 
-                  type="text" 
-                  placeholder="Movies, shows and more" 
-                  value={query} 
-                  onChange={(e) => setQuery(e.target.value)} 
-                  onFocus={() => setShowDropdown(true)} 
-                  className="pl-10 pr-4 py-2 w-64 rounded-full bg-white/10 text-white placeholder-white/50 border border-transparent focus:outline-none focus:border-white/30 focus:bg-white/20 transition-all shadow-inner" 
+                <input
+                  type="text"
+                  placeholder="Movies, shows and more"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  onFocus={() => setShowDropdown(true)}
+                  className="pl-10 pr-4 py-2 w-64 rounded-full bg-white/10 text-white placeholder-white/50 border border-transparent focus:outline-none focus:border-white/30 focus:bg-white/20 transition-all shadow-inner"
                 />
               </form>
 
@@ -125,7 +125,7 @@ export default function Navbar() {
                     {link.name}
                   </Link>
                   {link.name === "Watchlist" && watchlist.length > 0 && (
-                     <span className="absolute -top-3 -right-4 bg-red-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full shadow-lg">{watchlist.length}</span>
+                    <span className="absolute -top-3 -right-4 bg-red-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full shadow-lg">{watchlist.length}</span>
                   )}
                 </div>
               ))}
@@ -149,7 +149,7 @@ export default function Navbar() {
       {menuOpen && (
         <div className="md:hidden bg-[#141414]/95 backdrop-blur-3xl px-4 py-4 space-y-4 border-b border-white/10 absolute w-full">
           <form onSubmit={handleSearch} className="relative flex items-center">
-             <input type="text" placeholder="Search..." value={query} onChange={(e) => setQuery(e.target.value)} className="w-full px-4 py-2 rounded-full bg-white/10 text-white placeholder-white/50 border border-white/20 focus:outline-none" />
+            <input type="text" placeholder="Search..." value={query} onChange={(e) => setQuery(e.target.value)} className="w-full px-4 py-2 rounded-full bg-white/10 text-white placeholder-white/50 border border-white/20 focus:outline-none" />
           </form>
           {links.map((link) => (
             <div key={link.path} className="relative w-fit">

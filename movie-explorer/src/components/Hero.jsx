@@ -16,7 +16,7 @@ export default function Hero({ movie }) {
             {/* Smooth Vignette and Gradient fades matching MovieDetails */}
             <div className="absolute inset-0 bg-gradient-to-t from-[#0f1014] via-[#0f1014]/50 to-transparent" />
             <div className="absolute inset-0 bg-gradient-to-r from-[#0f1014] via-[#0f1014]/60 to-transparent" />
-            
+
             <div className="relative z-10 w-full h-full flex items-end pb-16">
                 <div className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
                     <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold text-white mb-4 drop-shadow-lg tracking-tight max-w-3xl">
