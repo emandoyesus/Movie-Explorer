@@ -1,17 +1,21 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import useWatchlist from "../hooks/useWatchlist";
+import { useAuth } from "../context/AuthContext";
 
 export default function Navbar() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const { watchlist } = useWatchlist();
+  const { user, logout } = useAuth();
 
   const searchRef = useRef();
+  const profileRef = useRef();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -51,6 +55,9 @@ export default function Navbar() {
     const handleClickOutside = (e) => {
       if (searchRef.current && !searchRef.current.contains(e.target)) {
         setShowDropdown(false);
+      }
+      if (profileRef.current && !profileRef.current.contains(e.target)) {
+        setShowProfileMenu(false);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -94,7 +101,7 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Right: Search & Login */}
+        {/* Right: Search & Login/Profile */}
         <div className="flex items-center gap-8 lg:gap-10 shrink-0">
             
             {/* Search */}
@@ -128,12 +135,39 @@ export default function Navbar() {
                 )}
             </div>
 
-            <button 
-                onClick={() => navigate("/login")}
-                className="px-8 py-2.5 bg-primary/10 border border-primary/20 text-primary hover:bg-primary hover:text-black transition-all rounded-full text-[10px] font-black uppercase tracking-[0.2em] shadow-lg"
-            >
-                Login
-            </button>
+            {user ? (
+                <div ref={profileRef} className="relative">
+                    <button 
+                        onClick={() => setShowProfileMenu(!showProfileMenu)}
+                        className="w-10 h-10 rounded-full border-2 border-primary/20 p-0.5 hover:border-primary transition-all overflow-hidden"
+                    >
+                        <img src={user.avatar} alt="User" className="w-full h-full object-cover rounded-full" />
+                    </button>
+                    {showProfileMenu && (
+                        <div className="absolute top-14 right-0 w-48 bg-[#121822] rounded-2xl border border-white/5 shadow-2xl p-2 z-[1001]">
+                            <div className="px-4 py-3 border-b border-white/5 mb-2">
+                                <p className="text-white text-[11px] font-black uppercase tracking-wider truncate">{user.username}</p>
+                                <p className="text-gray-500 text-[9px] font-bold truncate lowercase mt-0.5">{user.email}</p>
+                            </div>
+                            <button className="w-full text-left px-4 py-3 text-[10px] font-black uppercase tracking-widest text-gray-400 hover:text-white hover:bg-white/5 rounded-xl transition-all">Profile Setup</button>
+                            <button className="w-full text-left px-4 py-3 text-[10px] font-black uppercase tracking-widest text-gray-400 hover:text-white hover:bg-white/5 rounded-xl transition-all">Settings</button>
+                            <button 
+                                onClick={logout}
+                                className="w-full text-left px-4 py-3 text-[10px] font-black uppercase tracking-widest text-red-500/70 hover:text-red-500 hover:bg-red-500/5 rounded-xl transition-all mt-2 border-t border-white/5 pt-4"
+                            >
+                                Logout Session
+                            </button>
+                        </div>
+                    )}
+                </div>
+            ) : (
+                <button 
+                    onClick={() => navigate("/login")}
+                    className="px-8 py-2.5 bg-primary/10 border border-primary/20 text-primary hover:bg-primary hover:text-black transition-all rounded-full text-[10px] font-black uppercase tracking-[0.2em] shadow-lg"
+                >
+                    Login
+                </button>
+            )}
         </div>
 
       </div>

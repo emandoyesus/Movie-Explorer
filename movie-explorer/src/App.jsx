@@ -10,6 +10,7 @@ import Discover from "./pages/Discover";
 import Contact from "./pages/Contact";
 import Login from "./pages/Login";
 import { WatchlistProvider } from "./context/WatchlistContext";
+import { AuthProvider } from "./context/AuthContext";
 
 function Layout({ children }) {
   const location = useLocation();
@@ -41,22 +42,24 @@ function Layout({ children }) {
 
 function App() {
   return (
-    <WatchlistProvider>
-        <BrowserRouter>
-          <Layout>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/movie/:id" element={<MovieDetails />} />
-              <Route path="/watchlist" element={<Watchlist />} />
-              <Route path="/search" element={<Search />} />
-              <Route path="/movies" element={<Discover type="movie" />} />
-              <Route path="/series" element={<Discover type="tv" />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/login" element={<Login />} />
-            </Routes>
-          </Layout>
-        </BrowserRouter>
-    </WatchlistProvider>
+    <AuthProvider>
+        <WatchlistProvider>
+            <BrowserRouter>
+              <Layout>
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/movie/:id" element={<MovieDetails />} />
+                  <Route path="/watchlist" element={<Watchlist />} />
+                  <Route path="/search" element={<Search />} />
+                  <Route path="/movies" element={<Discover type="movie" />} />
+                  <Route path="/series" element={<Discover type="tv" />} />
+                  <Route path="/contact" element={<Contact />} />
+                  <Route path="/login" element={<Login />} />
+                </Routes>
+              </Layout>
+            </BrowserRouter>
+        </WatchlistProvider>
+    </AuthProvider>
   );
 }
 

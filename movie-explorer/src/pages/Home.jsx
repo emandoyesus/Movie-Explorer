@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import MovieRow from "../components/MovieRow";
 import Hero from "../components/Hero";
 import useWatchlist from "../hooks/useWatchlist";
+import { SkeletonHero, SkeletonRow } from "../components/Skeleton";
 
 const apiKey = import.meta.env.VITE_TMDB_API_KEY;
 
@@ -12,6 +13,7 @@ export default function Home() {
     const [pages, setPages] = useState({ popular: 1, topRated: 1, upcoming: 1 });
     const [selectedGenre, setSelectedGenre] = useState(null);
     const [genres, setGenres] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
     const watchlistHandlers = useWatchlist();
 
     const fetchCategory = async (category, page, genreId = null) => {
@@ -37,15 +39,21 @@ export default function Home() {
 
     useEffect(() => {
         const loadMovies = async () => {
-            const [pop, top, up] = await Promise.all([
-                fetchCategory("popular", 1, selectedGenre),
-                fetchCategory("top_rated", 1, selectedGenre),
-                fetchCategory("upcoming", 1, selectedGenre),
-            ]);
-            setPopular(pop);
-            setTopRated(top);
-            setUpcoming(up);
-            setPages({ popular: 1, topRated: 1, upcoming: 1 });
+            setIsLoading(true);
+            try {
+                const [pop, top, up] = await Promise.all([
+                    fetchCategory("popular", 1, selectedGenre),
+                    fetchCategory("top_rated", 1, selectedGenre),
+                    fetchCategory("upcoming", 1, selectedGenre),
+                ]);
+                setPopular(pop);
+                setTopRated(top);
+                setUpcoming(up);
+                setPages({ popular: 1, topRated: 1, upcoming: 1 });
+            } finally {
+                // Subtle timeout to ensure smooth transition
+                setTimeout(() => setIsLoading(false), 800);
+            }
         };
         loadMovies();
     }, [selectedGenre]);
@@ -74,11 +82,12 @@ export default function Home() {
     return (
         <div className="bg-background min-h-screen text-white pb-20 w-full">
             {/* --- HERO --- */}
-            {!selectedGenre && popular.length > 0 && (
-                <div className="px-6 sm:px-10 lg:px-20 max-w-[1800px] mx-auto">
+            <div className="px-6 sm:px-10 lg:px-20 max-w-[1800px] mx-auto">
+                {isLoading && <SkeletonHero />}
+                {!isLoading && !selectedGenre && popular.length > 0 && (
                     <Hero popularMovies={popular} />
-                </div>
-            )}
+                )}
+            </div>
 
             {/* --- MAIN CONTENT --- */}
             <div className="relative z-20 px-6 lg:px-20 max-w-[1800px] mx-auto">
@@ -112,27 +121,37 @@ export default function Home() {
                     </div>
                 </div>
 
-                {/* --- MOVIE ROWS --- */}
+                {/* --- MOVIE ROWS / SKELETONS --- */}
                 <div className="flex flex-col gap-10">
-                    <MovieRow
-                        title={selectedGenre ? "Discover Results" : "Top Picks For You"}
-                        movies={popular}
-                        watchlistHandlers={watchlistHandlers}
-                        loadMore={loadMorePopular}
-                    />
-                    <MovieRow
-                        title="Global Rankings"
-                        movies={topRated}
-                        watchlistHandlers={watchlistHandlers}
-                        loadMore={loadMoreTopRated}
-                    />
-                    {!selectedGenre && (
-                        <MovieRow
-                            title="Anticipated Releases"
-                            movies={upcoming}
-                            watchlistHandlers={watchlistHandlers}
-                            loadMore={loadMoreUpcoming}
-                        />
+                    {isLoading ? (
+                        <>
+                            <SkeletonRow />
+                            <SkeletonRow />
+                            <SkeletonRow />
+                        </>
+                    ) : (
+                        <>
+                            <MovieRow
+                                title={selectedGenre ? "Discover Results" : "Top Picks For You"}
+                                movies={popular}
+                                watchlistHandlers={watchlistHandlers}
+                                loadMore={loadMorePopular}
+                            />
+                            <MovieRow
+                                title="Global Rankings"
+                                movies={topRated}
+                                watchlistHandlers={watchlistHandlers}
+                                loadMore={loadMoreTopRated}
+                            />
+                            {!selectedGenre && (
+                                <MovieRow
+                                    title="Anticipated Releases"
+                                    movies={upcoming}
+                                    watchlistHandlers={watchlistHandlers}
+                                    loadMore={loadMoreUpcoming}
+                                />
+                            )}
+                        </>
                     )}
                 </div>
             </div>

@@ -3,20 +3,20 @@
 
 @theme {
   /* REFINED AGENCY THEME (LESS GLOW) */
-  
-  --color-white: #FFFFFF; 
+
+  --color-white: #FFFFFF;
   --color-black: #000000;
 
   /* Primary Brand - Clean Cyan */
   --color-primary: #00E5FF;
   --color-primary-dark: #00B4D8;
-  
+
   /* Deep cinematic backgrounds */
   --color-gray-200: #E5E7EB;
   --color-gray-400: #9CA3AF;
   --color-gray-700: #1F2937;
   --color-gray-800: #111827;
-  --color-gray-900: #0B0D14; 
+  --color-gray-900: #0B0D14;
 
   --color-background: #0B0D14;
 
@@ -25,6 +25,7 @@
 }
 
 @layer base {
+
   /* Custom Scrollbar Styles - SLEEK & AGENCY STYLE */
   ::-webkit-scrollbar {
     width: 8px;
@@ -42,7 +43,8 @@
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: #00e5ff; /* Primary accent on hover */
+    background: #00e5ff;
+    /* Primary accent on hover */
   }
 
   /* For Firefox */
@@ -53,11 +55,13 @@
 }
 
 @layer utilities {
+
   /* Toned down subtle highlights instead of ultra-glows */
   .subtle-ring {
     @apply ring-1 ring-white/10;
   }
+
   .cyan-dot {
-    @apply bg-primary shadow-[0_0_8px_rgba(0,229,255,0.5)];
+    @apply bg-primary shadow-[0_0_8px_rgba(0, 229, 255, 0.5)];
   }
 }
