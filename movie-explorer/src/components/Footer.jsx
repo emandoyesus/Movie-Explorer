@@ -13,7 +13,7 @@ export default function Footer() {
                     {/* Brand Section */}
                     <div className="lg:col-span-2">
                         <Link to="/" className="text-2xl font-black tracking-[0.25em] text-white inline-block mb-6">
-                            AGENCY
+                            AXORA
                         </Link>
                         <p className="text-gray-500 text-sm font-medium leading-relaxed max-w-sm">
                             The ultimate cinematic experience for movie enthusiasts. Discover, track,
@@ -70,7 +70,7 @@ export default function Footer() {
                 {/* Bottom Bar */}
                 <div className="flex flex-col md:flex-row items-center justify-between pt-8 border-t border-white/5 gap-4">
                     <p className="text-gray-600 text-[10px] font-bold uppercase tracking-[0.2em]">
-                        © {currentYear} DevNest. ALL RIGHTS RESERVED.
+                        © {currentYear} Axora. ALL RIGHTS RESERVED.
                     </p>
                     <div className="flex items-center gap-2 text-gray-600 text-[10px] font-bold uppercase tracking-[0.2em]">
                         <span>MADE with ❤️ BY</span>

@@ -112,24 +112,24 @@ export default function Home() {
                     </div>
                 </div>
 
-                {/* --- MOVIE ROWS (Sliced to reduce items) --- */}
+                {/* --- MOVIE ROWS --- */}
                 <div className="flex flex-col gap-10">
                     <MovieRow
                         title={selectedGenre ? "Discover Results" : "Top Picks For You"}
-                        movies={popular.slice(0, 7)}
+                        movies={popular}
                         watchlistHandlers={watchlistHandlers}
                         loadMore={loadMorePopular}
                     />
                     <MovieRow
                         title="Global Rankings"
-                        movies={topRated.slice(0, 7)}
+                        movies={topRated}
                         watchlistHandlers={watchlistHandlers}
                         loadMore={loadMoreTopRated}
                     />
                     {!selectedGenre && (
                         <MovieRow
                             title="Anticipated Releases"
-                            movies={upcoming.slice(0, 7)}
+                            movies={upcoming}
                             watchlistHandlers={watchlistHandlers}
                             loadMore={loadMoreUpcoming}
                         />

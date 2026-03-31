@@ -9,7 +9,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const { watchlist } = useWatchlist(); // Local instances might stay out of sync until reload, but this is the simplest way.
+  const { watchlist } = useWatchlist();
 
   const searchRef = useRef();
 
@@ -62,6 +62,7 @@ export default function Navbar() {
     { name: "Movies", path: "/movies" },
     { name: "Series", path: "/series" },
     { name: "Watchlist", path: "/watchlist", showBadge: true },
+    { name: "Contact", path: "/contact" },
   ];
 
   return (
@@ -71,7 +72,7 @@ export default function Navbar() {
         {/* Left: Brand & Nav Links */}
         <div className="flex items-center gap-14">
           <Link to="/" className="text-2xl font-black tracking-[0.25em] text-white shrink-0">
-            AGENCY
+            AXORA
           </Link>
           
           <div className="hidden lg:flex items-center gap-10 text-[10px] font-black uppercase tracking-[0.3em]">
@@ -127,7 +128,10 @@ export default function Navbar() {
                 )}
             </div>
 
-            <button className="px-8 py-2.5 bg-primary/10 border border-primary/20 text-primary hover:bg-primary hover:text-black transition-all rounded-full text-[10px] font-black uppercase tracking-[0.2em] shadow-lg">
+            <button 
+                onClick={() => navigate("/login")}
+                className="px-8 py-2.5 bg-primary/10 border border-primary/20 text-primary hover:bg-primary hover:text-black transition-all rounded-full text-[10px] font-black uppercase tracking-[0.2em] shadow-lg"
+            >
                 Login
             </button>
         </div>
