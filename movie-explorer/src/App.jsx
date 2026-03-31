@@ -6,6 +6,7 @@ import MovieDetails from "./pages/MovieDetails";
 import Watchlist from "./pages/Watchlist";
 import Search from "./pages/Search";
 import Discover from "./pages/Discover";
+import Contact from "./pages/Contact";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
               <Route path="/search" element={<Search />} />
               <Route path="/movies" element={<Discover type="movie" />} />
               <Route path="/series" element={<Discover type="tv" />} />
+              <Route path="/contact" element={<Contact />} />
             </Routes>
           </main>
 

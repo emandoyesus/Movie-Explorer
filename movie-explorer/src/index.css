@@ -24,6 +24,34 @@
   --font-sans: 'Outfit', system-ui, -apple-system, sans-serif;
 }
 
+@layer base {
+  /* Custom Scrollbar Styles - SLEEK & AGENCY STYLE */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #0b0d14;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #1f2937;
+    border-radius: 10px;
+    border: 2px solid #0b0d14;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #00e5ff; /* Primary accent on hover */
+  }
+
+  /* For Firefox */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #1f2937 #0b0d14;
+  }
+}
+
 @layer utilities {
   /* Toned down subtle highlights instead of ultra-glows */
   .subtle-ring {
