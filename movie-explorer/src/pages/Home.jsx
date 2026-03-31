@@ -71,35 +71,39 @@ export default function Home() {
         setPages((prev) => ({ ...prev, upcoming: nextPage }));
     };
 
-    const heroMovie = selectedGenre ? null : popular[0];
-
     return (
-        <div className="bg-[#050505] min-h-screen text-white pb-12 w-full">
+        <div className="bg-background min-h-screen text-white pb-20 w-full">
             {/* --- HERO --- */}
-            {heroMovie ? <Hero movie={heroMovie} /> : <div className="pt-24" />}
+            {!selectedGenre && popular.length > 0 && (
+                <div className="px-6 sm:px-10 lg:px-20 max-w-[1800px] mx-auto">
+                    <Hero popularMovies={popular} />
+                </div>
+            )}
 
-            {/* --- MAIN CONTENT OVERLAPPING HERO --- */}
-            <div className={`relative z-20 ${heroMovie ? '-mt-24 sm:-mt-32' : ''}`}>
-
+            {/* --- MAIN CONTENT --- */}
+            <div className="relative z-20 px-6 lg:px-20 max-w-[1800px] mx-auto">
+                
                 {/* --- GENRE FILTER --- */}
-                <div className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto mb-10 overflow-x-auto scrollbar-hide mask-edges">
-                    <div className="flex flex-nowrap gap-3 pb-4 w-max">
+                <div className="mb-14 overflow-x-auto scrollbar-hide py-2">
+                    <div className="flex flex-nowrap gap-4 w-max mx-auto">
                         <button
-                            className={`px-5 py-2 rounded-full font-medium tracking-wide transition-all border ${!selectedGenre
-                                ? "bg-white text-black border-white shadow-[0_0_15px_rgba(255,255,255,0.3)]"
-                                : "bg-white/5 text-gray-300 border-white/10 hover:bg-white/10 hover:text-white"
-                                }`}
+                            className={`px-8 py-2.5 rounded-full text-[11px] font-black uppercase tracking-[0.2em] transition-all border ${
+                                !selectedGenre
+                                ? "bg-primary text-black border-primary"
+                                : "bg-white/5 text-gray-500 border-white/5 hover:border-white/20 hover:text-white"
+                            }`}
                             onClick={() => setSelectedGenre(null)}
                         >
-                            All
+                            All Categories
                         </button>
                         {genres.map((g) => (
                             <button
                                 key={g.id}
-                                className={`px-5 py-2 rounded-full font-medium tracking-wide transition-all border whitespace-nowrap ${selectedGenre === g.id
-                                    ? "bg-red-600 text-white border-red-500 shadow-[0_0_15px_rgba(212,175,55,0.5)]"
-                                    : "bg-white/10 backdrop-blur-md text-gray-200 border-white/10 hover:bg-white/20 hover:text-white shadow-sm"
-                                    }`}
+                                className={`px-8 py-2.5 rounded-full text-[11px] font-black uppercase tracking-[0.2em] transition-all border whitespace-nowrap ${
+                                    selectedGenre === g.id
+                                    ? "bg-primary text-black border-primary"
+                                    : "bg-white/5 text-gray-500 border-white/5 hover:border-white/20 hover:text-white"
+                                }`}
                                 onClick={() => setSelectedGenre(g.id)}
                             >
                                 {g.name}
@@ -108,27 +112,29 @@ export default function Home() {
                     </div>
                 </div>
 
-                {/* --- MOVIE ROWS --- */}
-                <MovieRow
-                    title={selectedGenre ? "Movies" : "Trending Now"}
-                    movies={selectedGenre ? popular : popular.slice(1)}
-                    watchlistHandlers={watchlistHandlers}
-                    loadMore={loadMorePopular}
-                />
-                <MovieRow
-                    title="Top Rated"
-                    movies={topRated}
-                    watchlistHandlers={watchlistHandlers}
-                    loadMore={loadMoreTopRated}
-                />
-                {!selectedGenre && (
+                {/* --- MOVIE ROWS (Sliced to reduce items) --- */}
+                <div className="flex flex-col gap-10">
                     <MovieRow
-                        title="Coming Soon"
-                        movies={upcoming}
+                        title={selectedGenre ? "Discover Results" : "Top Picks For You"}
+                        movies={popular.slice(0, 7)}
                         watchlistHandlers={watchlistHandlers}
-                        loadMore={loadMoreUpcoming}
+                        loadMore={loadMorePopular}
                     />
-                )}
+                    <MovieRow
+                        title="Global Rankings"
+                        movies={topRated.slice(0, 7)}
+                        watchlistHandlers={watchlistHandlers}
+                        loadMore={loadMoreTopRated}
+                    />
+                    {!selectedGenre && (
+                        <MovieRow
+                            title="Anticipated Releases"
+                            movies={upcoming.slice(0, 7)}
+                            watchlistHandlers={watchlistHandlers}
+                            loadMore={loadMoreUpcoming}
+                        />
+                    )}
+                </div>
             </div>
         </div>
     );

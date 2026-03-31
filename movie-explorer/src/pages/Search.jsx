@@ -33,19 +33,23 @@ export default function Search() {
     }, [query]);
 
     return (
-        <div className="pt-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto min-h-screen text-white pb-16">
-            <h2 className="text-3xl lg:text-4xl font-extrabold mb-8 drop-shadow-md tracking-tight">
-                Results for <span className="text-red-500">"{query}"</span>
+        <div className="pt-32 px-6 lg:px-10 min-h-screen text-white pb-16">
+            <h2 className="text-3xl lg:text-4xl font-black uppercase mb-10 tracking-wide">
+                Results for <span className="text-primary italic animate-pulse">"{query}"</span>
             </h2>
 
             {isLoading ? (
-                <div className="flex justify-center mt-20">
-                    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-red-600"></div>
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-6">
+                    {[...Array(7)].map((_, i) => (
+                        <div key={i} className="bg-white/5 animate-pulse rounded-[1rem] pb-[150%] w-full" />
+                    ))}
                 </div>
             ) : movies.length === 0 ? (
-                <p className="text-gray-400 text-lg">No movies found. Try another search!</p>
+                <div className="flex flex-col items-center justify-center mt-32">
+                    <p className="text-gray-500 text-lg font-light tracking-wide italic">No movies found. Try another search!</p>
+                </div>
             ) : (
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6 lg:gap-8">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-6">
                     {movies.map(movie => (
                         <MovieCard key={movie.id} movie={movie} watchlistHandlers={watchlistHandlers} />
                     ))}

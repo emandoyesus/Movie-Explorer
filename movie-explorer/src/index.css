@@ -1,38 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
 
 @theme {
-  /* ULTRA-PREMIUM LUXURY VIP CINEMA THEME */
+  /* REFINED AGENCY THEME (LESS GLOW) */
   
-  /* Soft, elegant off-white for text to look expensive */
-  --color-white: #FCFAF5; 
+  --color-white: #FFFFFF; 
   --color-black: #000000;
 
-  /* Replace typical branding (Netflix Red/Hacker Green) with rich, metallic VIP Gold */
-  --color-red-500: #E6C27A; /* Lighter shimmering gold for hovers */
-  --color-red-600: #D4AF37; /* Deep luxury gold for logos and badges */
+  /* Primary Brand - Clean Cyan */
+  --color-primary: #00E5FF;
+  --color-primary-dark: #00B4D8;
   
-  /* Deep, sophisticated obsidian backgrounds (perfect for cinematic content) */
-  --color-gray-200: #1a1a1a;
-  --color-gray-700: #1C1C1C;
-  --color-gray-800: #121212;
-  --color-gray-900: #050505;
+  /* Deep cinematic backgrounds */
+  --color-gray-200: #E5E7EB;
+  --color-gray-400: #9CA3AF;
+  --color-gray-700: #1F2937;
+  --color-gray-800: #111827;
+  --color-gray-900: #0B0D14; 
 
-  /* Global variables */
-  --color-primary: #D4AF37;
-  --color-background: #050505;
+  --color-background: #0B0D14;
 
-  /* Elegant mixed typography: Outfit for modern UI readability */
+  /* Typography */
   --font-sans: 'Outfit', system-ui, -apple-system, sans-serif;
-  --font-serif: 'Playfair Display', Georgia, serif;
 }
 
-/* Add custom animations and premium glass classes */
 @layer utilities {
-  .glass-premium {
-    @apply bg-[#121212]/80 backdrop-blur-2xl border border-white/10 shadow-[0_10px_40px_rgba(0,0,0,0.8)];
+  /* Toned down subtle highlights instead of ultra-glows */
+  .subtle-ring {
+    @apply ring-1 ring-white/10;
   }
-  .gold-glow {
-    @apply shadow-[0_0_20px_rgba(212,175,55,0.4)];
+  .cyan-dot {
+    @apply bg-primary shadow-[0_0_8px_rgba(0,229,255,0.5)];
   }
 }
