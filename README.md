@@ -1,7 +1,5 @@
 # 🎬 AXORA Movies - Premium Cinematic Platform
 
-![AXORA Preview](https://image.tmdb.org/t/p/original/wwemzKWzjKYJFfCeiB57q3r4Bcm.jpg)
-
 **AXORA** is a high-end, agency-level Movie Discovery Platform built for movie enthusiasts who demand a premium, distraction-free experience. Featuring a stunning glassmorphic UI, real-time API integrations, and cinematic interaction patterns.
 
 ---
