@@ -10,7 +10,7 @@ export default function MovieCard({ movie, watchlistHandlers }) {
     
     const inWatchlist = watchlistHandlers ? watchlistHandlers.isInWatchlist(movie.id) : false;
     const releaseYear = movie.release_date?.substring(0, 4) || "N/A";
-    const rating = movie.vote_average?.toFixed(1) || "NR";
+    const rating = movie.vote_average ? Number(movie.vote_average).toFixed(1) : "NR";
 
     const handleWatchlistClick = (e) => {
         e.preventDefault();
