@@ -30,7 +30,6 @@ export default function Navbar() {
 
   useEffect(() => {
     if (!query.trim()) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       setResults([]);
       return;
     }
@@ -138,7 +137,11 @@ export default function Navbar() {
 
             {/* Auth / Profile Area */}
             {user ? (
-                <div ref={profileRef} className="relative">
+                <div ref={profileRef} className="relative flex items-center gap-3">
+                    {/* USER NAME DISPLAY */}
+                    <span className="text-[9px] font-black uppercase tracking-[0.2em] text-white/80">
+                        {user.name}
+                    </span>
                     <button onClick={() => setShowProfileMenu(!showProfileMenu)} className="w-9 h-9 rounded-full border-2 border-primary/20 p-0.5 hover:border-primary transition-all overflow-hidden focus:outline-none">
                         <img src={user.avatar} className="w-full h-full object-cover rounded-full" />
                     </button>
